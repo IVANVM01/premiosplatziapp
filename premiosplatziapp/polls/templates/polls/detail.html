@@ -1,0 +1,40 @@
+{% comment %}
+<!-- question.choice_set.all no lleva parentesis () -->
+<h1>{{ question.question_text }}</h1>
+<ul>
+    {% for choice in question.choice_set.all %}
+        <li>{{ choice.choice_text }}</li>
+    {% endfor %}
+</ul>
+{% endcomment %}
+
+
+<!-- El parametro accion es la url a la cual apunta el formulario, es decir,
+     al dar enviar django va a ejecutar la view que se indique en accion (en este caso es vote, una view sin template)-->
+<!-- Una buena practica al enviar un formulario es hacerlo por el metodo POST para que los datos viajen ocultos a traves del prococolo -->
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    <!-- La siguiente etiqueta sirve para protegerse de ataques Cross-site request forgery (falsificación de petición en sitios cruzados) -->
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        {% if error_message %}
+            <!-- La etiqueta strong es negrita -->
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+        {% for choice in question.choice_set.all %}
+            <!-- cuando se selecione una respuesta, en el backend va a llegar un diccionario cuya llave (name) es choice y el valor (value) es el id de la seleccion -->
+            <!-- forloop.counter atajo que permite obtener el numero de la interacion actual del ciclo -->
+            <!-- el parametro id del input puesto en el parametro for del label sirve para que queden relacionados, asi se hace seleccion incluso dando clic en la etiqueta  -->
+            <input
+                type="radio"
+                name="choice"
+                id="choice{{ forloop.counter }}"
+                value={{ choice.id }}
+                required
+            >
+            <label for="choice{{ forloop.counter }}"> {{ choice.choice_text }} </label>
+            <br>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Votar">
+</form>
