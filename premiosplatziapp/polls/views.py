@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.views import generic
 
 from . models import Question, Choice
 
@@ -12,6 +13,8 @@ Args:
     request ([HTTP]): [Request]
 Returns:
     [Render]: [Request, Url, Dict(Question.objects.all())]
+"""
+# FUNCTION BASED VIEW
 """
 def index(request):
     #return HttpResponse("Estás en la página principal de Premios Platzi App")
@@ -26,8 +29,21 @@ def index(request):
     # la ruta del template (Django junta las carpetas template de todas las aplicaciones, por lo que solo se requiere indicar la ruta interna partiendo de la carpeta template),
     # y un contexto que son un conjuno de variables en un diccionario disponibles para uso en el template
     return render(request, "polls/index.html", context)
+"""
+# CLASS BASED VIEW:             http://ccbv.co.uk/
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"              # Esto se corresponde con el segundo parametro de render - (atributo de la clase)
+    context_object_name = "latest_question_list"    # Esto se corresponde con el tercer parametro de render, definiendo el nombre con que se van a pasar los datos por context - (atributo de la clase)
+
+    def get_queryset(self): # Recibe self como parametro porque es el metodo de una clase. Realiza la operación de la consulta
+        #return Question.objects.all()
+        """Return the last five published questions"""
+        # El menos(-) al principio es para ordenar desde las mas recientes a las mas antiguas. Se hace un rebanado o slicing de los 5 primeros resultados
+        return Question.objects.order_by("-pub_date")[:5] # Estos son los datos que se van a guardar con el nombre "latest_question_list"
 
 
+# FUNCTION BASED VIEW
+"""
 def detail(request, question_id):
     #return HttpResponse(f"Estás viendo la pregunta número {question_id}")
 
@@ -38,8 +54,15 @@ def detail(request, question_id):
         "question": question
     }
     return render(request, "polls/detail.html", context)
+"""
+# CLASS BASED VIEW
+class DetailView(generic.DeleteView):   # Circunstancial que el nombre de la clase propia se llama igual que la clase de la que hereda
+    model = Question                    # Solo con definir este atributo, Django por debajo hace toda la consulta correspondiente
+    template_name = "polls/detail.html" # Solo con definir este atributo, Django por debajo hace el return render, definiendo el nombre con que se van a pasar los datos ya consultados
 
 
+# FUNCTION BASED VIEW
+"""
 def results(request, question_id):
     #return HttpResponse(f"Estás viendo los resultados de la pregunta número {question_id}")
 
@@ -48,6 +71,11 @@ def results(request, question_id):
         "question": question
     }
     return render(request, "polls/results.html", context)
+"""
+# CLASS BASED VIEW
+class ResultView(generic.DeleteView):
+    model = Question                    # Solo con definir este atributo, Django por debajo hace toda la consulta correspondiente
+    template_name = "polls/results.html"# Solo con definir este atributo, Django por debajo hace el return render, definiendo el nombre con que se van a pasar los datos ya consultados
 
 
 def vote(request, question_id):
