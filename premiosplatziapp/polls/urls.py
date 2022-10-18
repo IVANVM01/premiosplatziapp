@@ -17,7 +17,7 @@ urlpatterns = [
     # ex: /polls/
     path("", views.IndexView.as_view(), name="index"),
     # ex: /polls/5/
-    path("<int:pk>/", views.DetailView.as_view(), name="detail"),  #El valor definido en name es el que se usa con la etiqueta url en el archivo html
+    path("<int:pk>/detail/", views.DetailView.as_view(), name="detail"),  #El valor definido en name es el que se usa con la etiqueta url en el archivo html
     # ex: /polls/5/results
     path("<int:pk>/results/", views.ResultView.as_view(), name="results"),
 

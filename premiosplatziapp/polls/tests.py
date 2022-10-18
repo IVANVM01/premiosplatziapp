@@ -120,6 +120,26 @@ class QuestionIndexViewTests(TestCase):
         self.assertQuerysetEqual(response.context["latest_question_list"], [question2, question1]) #El orden es al contrario porque la IndexView ordena desde la mas reciente (q2) a la mas antigua (q1). assertQuerysetEqual deja dependencia al orden de los objetos
 
 
+class QuestionDetailViewTest(TestCase):
+    # Si bien la IndexView no muestra preguntas futuras, si el usuario conoce su url podrá accederla, lo que es un error que se debe corregir en la DetailView
+
+    # Si el usuario conoce la url de una pregunta futura, no la pueda ver y retorne 404 (Deseado)
+    def test_future_question(self):
+        """The DetailView of a question with a pub_date in the future returns a 404 error not found"""
+        future_question = create_question("Future question", 30)
+        url = reverse("polls:detail", args=(future_question.id,))  #Trae la url definida en la app "polls" cuyo nombre es "detail": /polls/<int:pk>/detail/
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    # Si el usuario conoce la url de una pregunta pasada, la pueda ver (Deseado)
+    def test_past_question(self):
+        """The DetailView of a question with a pub_date in the past displays the question text"""
+        past_question = create_question("Past question", -30)
+        url = reverse("polls:detail", args=(past_question.id,))  #Trae la url definida en la app "polls" cuyo nombre es "detail": /polls/<int:pk>/detail/
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
+
+
 # assert condition, msg_error
 #assert len(string) > 0, "No se puede ingresar una cadena vacia"
 # Afirmo que la logitud del string es mayor que cero, sino corte el programa e imprima el mensaje

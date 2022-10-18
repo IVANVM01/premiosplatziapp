@@ -7,8 +7,6 @@ from django.utils import timezone
 from . models import Question, Choice
 
 
-# Create your views here.
-
 """[polls/views/index]
 Args:
     request ([HTTP]): [Request]
@@ -62,9 +60,13 @@ def detail(request, question_id):
     return render(request, "polls/detail.html", context)
 """
 # CLASS BASED VIEW
-class DetailView(generic.DeleteView):   # Circunstancial que el nombre de la clase propia se llama igual que la clase de la que hereda
+class DetailView(generic.DetailView):   # Circunstancial que el nombre de la clase propia se llama igual que la clase de la que hereda
     model = Question                    # Solo con definir este atributo, Django por debajo hace toda la consulta correspondiente
     template_name = "polls/detail.html" # Solo con definir este atributo, Django por debajo hace el return render, definiendo el nombre con que se van a pasar los datos ya consultados
+
+    def get_queryset(self):
+        """Exclude any questions that aren't published yet"""
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 # FUNCTION BASED VIEW
@@ -79,7 +81,7 @@ def results(request, question_id):
     return render(request, "polls/results.html", context)
 """
 # CLASS BASED VIEW
-class ResultView(generic.DeleteView):
+class ResultView(generic.DetailView):
     model = Question                    # Solo con definir este atributo, Django por debajo hace toda la consulta correspondiente
     template_name = "polls/results.html"# Solo con definir este atributo, Django por debajo hace el return render, definiendo el nombre con que se van a pasar los datos ya consultados
 
