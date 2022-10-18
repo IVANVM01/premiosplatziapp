@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from . models import Question, Choice
 
@@ -37,9 +38,14 @@ class IndexView(generic.ListView):
 
     def get_queryset(self): # Recibe self como parametro porque es el metodo de una clase. Realiza la operación de la consulta
         #return Question.objects.all()
+        
         """Return the last five published questions"""
         # El menos(-) al principio es para ordenar desde las mas recientes a las mas antiguas. Se hace un rebanado o slicing de los 5 primeros resultados
-        return Question.objects.order_by("-pub_date")[:5] # Estos son los datos que se van a guardar con el nombre "latest_question_list"
+        #return Question.objects.order_by("-pub_date")[:5] # Estos son los datos que se van a guardar con el nombre "latest_question_list"
+
+        # De la forma anterior tiene el error de visualizar incluso preguntas creadas en el futuro
+        # Se cambia a un filter y, aplicando el atributo Less_Than_or_Equal mediante el operador de doble guion bajo a pub_date, se verifica la fecha
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5] # Estos son los datos que se van a guardar con el nombre "latest_question_list"
 
 
 # FUNCTION BASED VIEW

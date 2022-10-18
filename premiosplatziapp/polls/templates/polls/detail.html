@@ -9,8 +9,8 @@
 {% endcomment %}
 
 
-<!-- El parametro accion es la url a la cual apunta el formulario, es decir,
-     al dar enviar django va a ejecutar la view que se indique en accion (en este caso es vote, una view sin template)-->
+<!-- El parametro action es la url a la cual apunta el formulario, es decir,
+     al dar clic en enviar django va a ejecutar la view que se indique en action (en este caso es vote, una view sin template)-->
 <!-- Una buena practica al enviar un formulario es hacerlo por el metodo POST para que los datos viajen ocultos a traves del prococolo -->
 <form action="{% url 'polls:vote' question.id %}" method="post">
     <!-- La siguiente etiqueta sirve para protegerse de ataques Cross-site request forgery (falsificación de petición en sitios cruzados) -->
@@ -27,8 +27,8 @@
             <!-- el parametro id del input puesto en el parametro for del label sirve para que queden relacionados, asi se hace seleccion incluso dando clic en la etiqueta  -->
             <input
                 type="radio"
-                name="choice"
                 id="choice{{ forloop.counter }}"
+                name="choice"
                 value={{ choice.id }}
                 required
             >
