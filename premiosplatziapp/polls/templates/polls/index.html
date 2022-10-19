@@ -1,3 +1,7 @@
+<!-- Sirve para traer archivos estaticos a los archivos html -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'polls/style.css' %}"> <!-- La etiqueta static dentro del href es para no harcodear la URL -->
+
 <!-- Mostrar un conjunto de enlaces que van a llevar al detalle de esas preguntas -->
 {% if latest_question_list %}
     <ul>

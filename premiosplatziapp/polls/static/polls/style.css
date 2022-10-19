@@ -1,0 +1,47 @@
+li a {
+    color: green;
+}
+
+/* En url se accede de manera relativa a todo lo que esta despues de las carpetas static*/
+/* body {
+    background: white url("images/backgroud.gif") no-repeat;
+} */
+
+/*
+li {
+    list-style: none;
+    display: block;
+    margin: 24px;
+}
+li a{
+    color : white;
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 8px;
+    background: gray;
+}
+li  a:hover {
+    background: orange;
+}
+li  a:active {
+    background: red;
+    color: white;
+}
+*/
+
+/*
+li a{
+    color : white;
+}
+li a:link, a:visited, a:focus {
+    border-radius: 10%;
+    background: gray;
+}
+li  a:hover {
+    background: orange;
+}
+li  a:active {
+    background: red;
+    color: white;
+}
+*/
