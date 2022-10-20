@@ -1,12 +1,32 @@
-<h1>{{ question.question_text }}</h1>
-<ul>
-    {% for choice in question.choice_set.all %}
-        <!-- La parte final es para agregar una s al final de la palabra voto si debe quedar en plural-->
-        <li>{{ choice.choice_text }} -- {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
-    {% endfor %}
-</ul>
+<!-- Sirve para poder traer archivos estaticos a los archivos html -->
+{% load static %}
 
-<br>
-<a href="{% url 'polls:detail' question.id %}">¿Quieres votar nuevamente esta pregunta?</a>
-<br>
-<a href="{% url 'polls:index' %}">Volover al inicio</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}"> <!-- La etiqueta static dentro del href es para no harcodear la URL -->
+    <link rel="stylesheet" href="{% static 'polls/results.css' %}">
+    <title>{{question.question_text}}</title>
+</head>
+<body>
+    <header>
+        <h1>{{ question.question_text }}</h1>
+    </header>
+    <main>
+        <ul>
+            {% for choice in question.choice_set.all %}
+                <!-- La parte final es para agregar una s al final de la palabra voto si debe quedar en plural-->
+                <li>{{ choice.choice_text }} -- {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+    <footer>
+        <a href="{% url 'polls:detail' question.id %}">¿Quieres votar nuevamente esta pregunta?</a>
+        <br>
+        <a href="{% url 'polls:index' %}">Volover al inicio</a>
+    </footer>
+</body>
+</html>

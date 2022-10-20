@@ -1,19 +1,44 @@
-<!-- Sirve para traer archivos estaticos a los archivos html -->
+<!-- Sirve para poder traer archivos estaticos a los archivos html -->
 {% load static %}
-<link rel="stylesheet" href="{% static 'polls/style.css' %}"> <!-- La etiqueta static dentro del href es para no harcodear la URL -->
 
-<!-- Mostrar un conjunto de enlaces que van a llevar al detalle de esas preguntas -->
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <!--  <li><a href="/polls/{{ question.id }}">{{ question.question_text }}</a></li>  --> <!-- La ruta esta HARD-CODING o quemada, que no es una buena practica -->
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
-        <!-- se usa el 'app_name : name_de_la_ruta_en_el_archivo_url' y lleva un parametro -->
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are avaliable.</p>
-{% endif%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'polls/reset.css' %}"> <!-- La etiqueta static dentro del href es para no harcodear la URL -->
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <title>Premios Platzi App</title>
+</head>
+<body>
+    <header>
+        <h1>Premios Platzi App</h1>
+    </header>
+    <main>
+        <!-- Mostrar un conjunto de enlaces que van a llevar al detalle de esas preguntas -->
+        {% if latest_question_list %}
+            <ul>
+            {% for question in latest_question_list %}
+                <!--  <li><a href="/polls/{{ question.id }}">{{ question.question_text }}</a></li>  --> <!-- La ruta esta HARD-CODING o quemada, que no es una buena practica -->
+                <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+                <!-- se usa el 'app_name : name_de_la_ruta_en_el_archivo_url' y lleva un parametro -->
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No polls are avaliable.</p>
+        {% endif%}
+    </main>
+    <footer>
+        <a href="https:/platzi.com">Platzi</a>
+        <a href="#">Contacto</a>
+        <a href="#">¿Quieres ser profe?</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Términos y condiciones</a>
+    </footer>
+</body>
+</html>
+
 
 <!-- https://docs.djangoproject.com/en/4.0/ref/templates/language/ -->
 <!-- https://docs.djangoproject.com/en/4.0/ref/templates/builtins/ -->
