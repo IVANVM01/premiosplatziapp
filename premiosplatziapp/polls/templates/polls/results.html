@@ -19,14 +19,14 @@
         <ul>
             {% for choice in question.choice_set.all %}
                 <!-- La parte final es para agregar una s al final de la palabra voto si debe quedar en plural-->
-                <li>{{ choice.choice_text }} -- {{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
+                <li>{{ choice.choice_text }}: &nbsp;{{ choice.votes }} voto{{ choice.votes|pluralize }}</li>
             {% endfor %}
         </ul>
     </main>
     <footer>
         <a href="{% url 'polls:detail' question.id %}">¿Quieres votar nuevamente esta pregunta?</a>
         <br>
-        <a href="{% url 'polls:index' %}">Volover al inicio</a>
+        <a href="{% url 'polls:index' %}">Volver al inicio</a>
     </footer>
 </body>
 </html>
